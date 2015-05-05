@@ -1,7 +1,6 @@
 'use strict';
 
 var THREE = require('three');
-var isString = require('is-string');
 
 var CopyPass = require('./passes/copy/CopyPass');
 var Stack = require('./Stack');
@@ -45,10 +44,6 @@ function Composer(renderer, settings) {
 
 module.exports = Composer;
 
-Composer.prototype.linkPass = function(id, pass) {
-  // Deprecated, use glslify
-};
-
 Composer.prototype.swapBuffers = function() {
   this.output = this.write;
   this.input = this.read;
@@ -65,9 +60,9 @@ Composer.prototype.render = function(scene, camera, keep, output) {
 };
 
 Composer.prototype.toScreen = function() {
-  // this.quad.material = this.copyPass.shader;
-  // this.quad.material.uniforms.tInput.value = this.read;
-  // this.quad.material.uniforms.resolution.value.set(this.width, this.height);
+  this.quad.material = this.copyPass.shader;
+  this.quad.material.uniforms.tInput.value = this.read;
+  this.quad.material.uniforms.resolution.value.set(this.width, this.height);
   this.renderer.render(this.scene, this.camera);
 };
 
@@ -82,9 +77,6 @@ Composer.prototype.pass = function(pass) {
     this.passStack(pass);
   }
   else {
-    // if (isString(pass)) {
-    //   this.quad.material = this.passes[pass];
-    // }
     if (pass instanceof THREE.ShaderMaterial) {
       this.quad.material = pass;
     }
