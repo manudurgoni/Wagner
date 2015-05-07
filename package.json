@@ -1,6 +1,6 @@
 {
-  "name": "wagner-common",
-  "version": "1.0.0",
+  "name": "@superguigui/wagner",
+  "version": "0.0.1",
   "description": "Fork of spite/Wagner in commonjs for browserify and glslify.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,15 @@
     "build": "browserify example/index.js -t glslify | uglifyjs -nm > example/bundle.js",
     "test": "browserify test/test.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/superguigui/Wagner.git"
+  },
+  "homepage": "http://github.com/superguigui/Wagner",
+  "bugs": {
+    "url": "https://github.com/superguigui/Wagner/issues"
+  },
+  "author": "Guillaume Gouessan <guillaume.gouessan@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "three": "^0.71.0"
