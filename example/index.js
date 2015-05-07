@@ -9,40 +9,20 @@ var WAGNER = require('..');
 // Passes
 var BoxBlurPass = require('../src/passes/box-blur/BoxBlurPass');
 var FXAAPass = require('../src/passes/fxaa/FXAAPass');
-var BlendPass = require('../src/passes/blend/BlendPass');
-var DOFPass = require('../src/passes/dof/DOFPass');
+var ZoomBlurPass = require('../src/passes/zoom-blur/ZoomBlurPass');
+var MultiPassBloomPass = require('../src/passes/bloom/MultiPassBloomPass');
 
 var scene, camera, renderer;
 var material, light;
 var cubes = [];
-var composer, copyPass, boxBlurPass, fxaaPass, blendPass, dofPass;
+var composer, boxBlurPass, fxaaPass, bloomPass;
 var gui;
-var scene2, light2, sphere;
-var renderTarget;
 
 var params = {
   usePostProcessing: true,
   useFXAA: true,
   useBlur: false,
-  useBlend: false,
-  useDOF: false,
-  blendMode: {
-    Normal: 1,
-    Darken: 3,
-    Multiply: 4,
-    ColorBurn: 5,
-    LinearBurn: 6,
-    Lighten: 8,
-    Screen: 9,
-    ColorDodge: 10,
-    LinearDodge: 11,
-    Overlay: 13,
-    SoftLight: 14,
-    HardLight: 15,
-    LinearLight: 17,
-    Difference: 20,
-    Exclusion: 21
-  }
+  useBloom: true
 };
 
 domready(function() {
@@ -53,16 +33,12 @@ domready(function() {
 
   renderer = new THREE.WebGLRenderer({alpha: true});
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x323232);
   document.body.appendChild(renderer.domElement);
 
   light = new THREE.PointLight(0xFFFFFF, 1);
   light.position.copy(camera.position);
   scene.add(light);
-
-  renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
-    minFilter: THREE.LinearFilter,
-    magFilter: THREE.LinearFilter
-  });
 
   material = new THREE.MeshPhongMaterial({color: 0x3a9ceb});
 
@@ -72,15 +48,6 @@ domready(function() {
     scene.add(c);
   }
   c.position.set(0, 0, 50);
-
-  scene2 = new THREE.Scene();
-  light2 = new THREE.PointLight(0xFFFFFF, 0.5);
-  light2.position.copy(camera.position);
-  scene2.add(light2);
-  sphere = new THREE.Mesh(new THREE.SphereGeometry(20, 8, 8), new THREE.MeshPhongMaterial({color: 0xffd074, shading: THREE.FlatShading}));
-  scene2.add(sphere);
-  renderer.render(scene2, camera, renderTarget);
-  renderer.setClearColor(0x323232);
 
   initPostprocessing();
   initGui();
@@ -116,12 +83,11 @@ function initPostprocessing() {
   renderer.autoClearColor = true;
   composer = new WAGNER.Composer(renderer);
   fxaaPass = new FXAAPass();
-  boxBlurPass = new BoxBlurPass(2, 2);
-  blendPass = new BlendPass({
-    mode: WAGNER.BlendMode.LinearDodge,
-    tInput2: renderTarget
+  boxBlurPass = new BoxBlurPass(3, 3);
+  bloomPass = new MultiPassBloomPass({
+    blurAmount: 2,
+    applyZoomBlur: true
   });
-  dofPass = new DOFPass();
   return composer;
 }
 
@@ -130,11 +96,7 @@ function initGui() {
   gui.add(params, 'usePostProcessing');
   gui.add(params, 'useFXAA');
   gui.add(params, 'useBlur');
-  gui.add(params, 'useBlend');
-  gui.add(blendPass.params, 'mode', params.blendMode);
-  gui.add(dofPass.params, 'focalDistance').step(0.001);
-  gui.add(dofPass.params, 'aperture');
-  gui.add(dofPass.params, 'blurAmount');
+  gui.add(params, 'useBloom');
   return gui;
 }
 
@@ -149,10 +111,9 @@ function animate() {
   if(params.usePostProcessing) {
     composer.reset();
     composer.render(scene, camera);
-    if(params.useBlend) composer.pass(blendPass);
+    if(params.useFXAA) composer.pass(fxaaPass);
     if(params.useBlur) composer.pass(boxBlurPass);
-    if(params.useFXAA) composer.pass(dofPass);
-    if(params.useDOF) composer.pass(fxaaPass);
+    if(params.useBloom) composer.pass(bloomPass);
     composer.toScreen();
   }
   else {

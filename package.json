@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "budo example/index.js:example/bundle.js --live -t glslify | garnish",
+    "build": "browserify example/index.js -t glslify | uglifyjs -nm > example/bundle.js",
     "test": "browserify test/test.js"
   },
   "author": "",
@@ -20,6 +21,7 @@
     "garnish": "^2.1.3",
     "glslify": "^2.1.2",
     "raf": "^2.0.4",
+    "uglifyjs": "^2.4.10",
     "watchify": "^3.2.1"
   }
 }

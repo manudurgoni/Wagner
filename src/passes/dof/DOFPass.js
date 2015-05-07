@@ -30,8 +30,8 @@ DOFPass.prototype.run = function(composer) {
   this.shader.uniforms.blurAmount.value = this.params.blurAmount;
 
   this.shader.uniforms.delta.value.set( 1, 0 );
-  composer.pass( this.shader );
+  composer.pass(this.shader);
 
   this.shader.uniforms.delta.value.set( 0, 1 );
-  composer.pass( this.shader );
+  composer.pass(this.shader);
 };
