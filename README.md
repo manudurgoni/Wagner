@@ -7,10 +7,11 @@ Fork of [spite/Wagner](http://github.com/spite/Wagner) in commonjs for browserif
 ## Installation
 
 ```bash
-npm install @superguigui/wagner --save
+npm install @superguigui/wagner glslify three --save
 ```
 
 ## Usage
+
 ```javascript
 var THREE = require('three');
 var WAGNER = require('@superguigui/wagner');
@@ -31,4 +32,9 @@ composer.reset();
 composer.render(scene, camera);
 composer.pass(bloomPass);
 composer.toScreen();
+```
+
+You need to apply the glslify transform to the @superguigui/wagner, to do that instead of applying the transform with `-t` as you would normally do it, use the `-g` flag.
+```bash
+browserify index.js -o bundle.js -g glslify
 ```
