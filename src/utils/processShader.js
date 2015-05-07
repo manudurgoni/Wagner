@@ -83,7 +83,5 @@ module.exports = function processShader(vertexShaderCode, fragmentShaderCode) {
     transparent: true
   });
 
-  console.log('processShader', shader);
-
   return shader;
 };

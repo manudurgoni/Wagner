@@ -1,14 +1,15 @@
 'use strict';
 
 var THREE = require('three');
-
 var CopyPass = require('./passes/copy/CopyPass');
 var Stack = require('./Stack');
 var Pass = require('./Pass');
 
 function Composer(renderer, settings) {
-  this.width = 1;
-  this.height = 1;
+  var pixelRatio = renderer.getPixelRatio();
+
+  this.width  = Math.floor(renderer.context.canvas.width  / pixelRatio) || 1;
+  this.height = Math.floor(renderer.context.canvas.height / pixelRatio) || 1;
 
   this.output = null;
   this.input = null;
@@ -40,6 +41,8 @@ function Composer(renderer, settings) {
   this.back = this.front.clone();
   this.startTime = Date.now();
   this.passes = {};
+
+  this.setSize(this.width, this.height);
 }
 
 module.exports = Composer;

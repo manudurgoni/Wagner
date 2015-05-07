@@ -3,14 +3,14 @@
 var glslify = require('glslify');
 var Pass = require('../../Pass');
 var vertex = glslify('../../shaders/vertex/basic.glsl');
-var fragment = glslify('./copy-fs.glsl');
+var fragment = glslify('./fxaa-fs.glsl');
 
-function CopyPass() {
+function FXAAPass() {
   Pass.call(this);
   this.setShader(vertex, fragment);
 }
 
-module.exports = CopyPass;
+module.exports = FXAAPass;
 
-CopyPass.prototype = Object.create(Pass.prototype);
-CopyPass.prototype.constructor = CopyPass;
+FXAAPass.prototype = Object.create(Pass.prototype);
+FXAAPass.prototype.constructor = FXAAPass;
