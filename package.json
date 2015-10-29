@@ -1,6 +1,6 @@
 {
   "name": "@superguigui/wagner",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Fork of spite/Wagner in commonjs for browserify and glslify.",
   "main": "index.js",
   "scripts": {
