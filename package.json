@@ -1,6 +1,6 @@
 {
   "name": "@superguigui/wagner",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Fork of spite/Wagner in commonjs for browserify and glslify.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "dependencies": {
     "glslify": "^2.1.2",
     "raf": "^2.0.4",
-    "three": "^0.71.0"
+    "three": "^0.73.0"
   },
   "devDependencies": {
     "browserify": "^10.1.0",
