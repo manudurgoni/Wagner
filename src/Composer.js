@@ -56,9 +56,10 @@ Composer.prototype.swapBuffers = function() {
   this.read = t;
 };
 
-Composer.prototype.render = function(scene, camera, keep, output) {
+Composer.prototype.render = function(scene, camera, keep, output, forceClear) {
+  if (typeof(forceClear)==='undefined') forceClear = true;
   if (keep) this.swapBuffers();
-  this.renderer.render(scene, camera, output ? output : this.write, true);
+  this.renderer.render(scene, camera, output ? output : this.write, forceClear);
   if (!output) this.swapBuffers();
 };
 
