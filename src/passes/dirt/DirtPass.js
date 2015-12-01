@@ -13,7 +13,8 @@ function DirtPass(options) {
 	this.blendPass = new BlendPass();
 	this.dirtTexture = THREE.ImageUtils.loadTexture( options.imgPath );
 
-	this.params.blendMode = options.blendMode;
+	this.params.blendMode = options.blendMode || 12;
+	this.params.opacity = options.opacity || 1;
 
 };
 
@@ -32,7 +33,7 @@ DirtPass.prototype.isLoaded = function() {
 };
 
 DirtPass.prototype.run = function( c ) {
-
+	this.blendPass.params.opacity = this.params.opacity;
 	this.blendPass.params.sizeMode = 1;
 	this.blendPass.params.mode = this.params.blendMode;
 	this.blendPass.params.tInput2 = this.dirtTexture;
