@@ -91,6 +91,7 @@ void main() {
 	if( mode == 3 ) { // darken
 
 		gl_FragColor = min( base, blend );
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -98,6 +99,7 @@ void main() {
 	if( mode == 4 ) { // multiply
 
 		gl_FragColor = base * blend;
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -110,6 +112,7 @@ void main() {
 			applyColorBurnToChannel( base.b, blend.b ),
 			applyColorBurnToChannel( base.a, blend.a )
 		);
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -117,6 +120,7 @@ void main() {
 	if( mode == 6 ) { // linear burn
 
 		gl_FragColor = max(base + blend - 1.0, 0.0);
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -128,6 +132,7 @@ void main() {
 	if( mode == 8 ) { // lighten
 
 		gl_FragColor = max( base, blend );
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -148,6 +153,7 @@ void main() {
 			applyColorDodgeToChannel( base.b, blend.b ),
 			applyColorDodgeToChannel( base.a, blend.a )
 		);
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -155,6 +161,7 @@ void main() {
 	if( mode == 11 ) { // linear dodge
 
 		gl_FragColor = min(base + blend, 1.0);
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -185,6 +192,7 @@ void main() {
 			applySoftLightToChannel( base.b, blend.b ),
 			applySoftLightToChannel( base.a, blend.a )
 		);
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -214,6 +222,7 @@ void main() {
 			applyLinearLightToChannel( base.b, blend.b ),
 			applyLinearLightToChannel( base.a, blend.a )
 		);
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -230,6 +239,7 @@ void main() {
 
 		gl_FragColor = abs( base - blend );
 		gl_FragColor.a = base.a + blend.b;
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 		return;
 
 	}
@@ -237,6 +247,7 @@ void main() {
 	if( mode == 21 ) { // exclusion
 
 		gl_FragColor = base + blend - 2. * base * blend;
+		gl_FragColor = gl_FragColor * opacity + base * ( 1. - opacity );
 
 	}
 
